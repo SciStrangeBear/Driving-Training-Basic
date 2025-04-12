@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>Use WSAD to control the car</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="navigation.js"></script>
+</head>
+
+<body>
+<div class="contentBox" id="contentBox">
+        <h1>基础驾驶训练 Basic Driving Training</h1>
+        <p class="text"><br>使用WSAD键控制车辆。使用勾选框选择是否显示车轮轨迹和倒车镜视野。 Q键直接向左打满，E键直接向右打满，T键直接回正。</p>
+        <br>carShow: 显示车身；
+        <br>traceShow: 显示四轮运动轨迹；
+        <br>rearView: 显示两侧后视镜视野；
+        <br>cheatingMode: 上帝之手摆放车辆位置</p>
+
+
+        <script type="text/javascript" src="https://www.geogebra.org/apps/deployggb.js"></script>
+        <script type="text/javascript">
+
+                var parameters = {
+				"prerelease":false,
+				"width":1600,
+				"height":900,
+				"showToolBar":false,
+				"borderColor":null,
+				"showMenuBar":false,
+				"showAlgebraInput":false,
+				"showResetIcon":true,
+				"enableLabelDrags":false,
+				"enableShiftDragZoom":true,
+				"enableRightClick":false,
+				"capturingThreshold":null,
+				"showToolBarHelp":false,
+				"errorDialogsActive":true,
+				"useBrowserForJS":false,
+				"material_id":"xnnm8m2d"};
+
+                var applet = new GGBApplet(parameters,true);
+              
+                //when used with Math Apps Bundle, uncomment this:
+                //applet.setHTML5Codebase('GeoGebra/HTML5/5.0/webSimple/');
+
+                window.onload = function() {
+                        applet.inject('applet_container');
+                        }
+        </script>
+
+<div id="applet_container"></div>
+
+<script type="text/javascript">
+    // 存储按键状态和定时器
+    const keyState = {
+        w: { pressed: false, interval: null },
+        s: { pressed: false, interval: null },
+        a: { pressed: false, interval: null },
+        d: { pressed: false, interval: null },
+        q: { pressed: false, interval: null },
+        e: { pressed: false, interval: null },
+        t: { pressed: false, interval: null }
+    };
+
+    // 按键按下事件
+    document.addEventListener('keydown', function (event) {
+        const key = event.key.toLowerCase();
+        
+        if (keyState[key] && !keyState[key].pressed) {
+            keyState[key].pressed = true;
+            
+            // 立即执行一次操作
+            executeAction(key);
+            
+            // 设置定时器连续执行
+            keyState[key].interval = setInterval(() => {
+                executeAction(key);
+            }, 100); // 每100毫秒执行一次
+        }
+    });
+
+    // 按键释放事件
+    document.addEventListener('keyup', function (event) {
+        const key = event.key.toLowerCase();
+        
+        if (keyState[key]) {
+            keyState[key].pressed = false;
+            clearInterval(keyState[key].interval);
+            
+            // 对于转向操作，释放按键时恢复直线
+
+        }
+    });
+
+    // 执行对应按键操作的函数
+    function executeAction(key) {
+        switch(key) {
+            case 'w':
+                ggbApplet.setValue('Drive', 0);
+                ggbApplet.setValue('Drive', 1);
+                console.log("Pressed 'w' key: Turn Front action triggered.");
+                break;
+                
+            case 's':
+                ggbApplet.setValue('Reverse', 0);
+                ggbApplet.setValue('Reverse', 1);
+                console.log("Pressed 's' key: Reverse triggered.");
+                break;
+                
+            case 'a':
+                ggbApplet.setValue('turnL', 0);
+                ggbApplet.setValue('turnL', 1);
+                console.log("Pressed 'a' key: Turnleft triggered.");
+                break;
+                
+            case 'd':
+                ggbApplet.setValue('turnR', 0);
+                ggbApplet.setValue('turnR', 1);
+                console.log("Pressed 'd' key: TurnRight triggered.");
+                break;
+                
+            case 'q':
+                ggbApplet.setValue('steer', -32);
+                console.log("Pressed 'q' key: HardLeft triggered.");
+                break;
+                
+            case 'e':
+                ggbApplet.setValue('steer', 32);
+                console.log("Pressed 'e' key: HardRight triggered.");
+                break;
+                
+            case 't':
+                ggbApplet.setValue('steer', 0);
+                console.log("Pressed 't' key: Straight triggered.");
+                break;
+        }
+    }
+</script>
+
+</form> 
+</div>
+</body>
+
+</html>
